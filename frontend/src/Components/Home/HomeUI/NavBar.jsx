@@ -36,7 +36,7 @@ function NavBar() {
       <div className="w-full bg-white shadow-xl rounded-b-3xl flex justify-between p-4">
         <Link to="/">
           <div className="flex items-center space-x-4">
-            <h1 className="font-mono text-xl font-semibold">Feed0</h1>
+            <h1 className="font-mono text-[2rem] font-semibold ">Feed0</h1>
           </div>
         </Link>
 
