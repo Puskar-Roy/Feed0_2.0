@@ -1,11 +1,11 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { FaVideo, FaImage, FaPollH, FaSmile } from "react-icons/fa";
 import axios from "axios";
 
 function CreatePost() {
   const [activeTab, setActiveTab] = useState("normal");
   // const [dataa,setData] = useState();
-  const[post , Setpost] = useState('');
+  const [post, Setpost] = useState("");
   // useEffect(() => {
   //   axios
   //     .get(`http://localhost:8000/api/posts`, {
@@ -19,12 +19,11 @@ function CreatePost() {
   //     });
   // }, []);
 
-
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  const handelPost = async ()=>{
+  const handelPost = async () => {
     console.log(post);
     // const postData = axios.post(`http://localhost:8000/api/posts`,{author:dataa.name , content:post}, {
     //   withCredentials: true,
@@ -34,8 +33,7 @@ function CreatePost() {
     // }else{
     //   window.alert("Not Done")
     // }
-
-  }
+  };
 
   return (
     <div
@@ -50,14 +48,14 @@ function CreatePost() {
             tab="normal"
             onClick={handleTabChange}
           >
-            Normal
+            Feed
           </TabButton>
           <TabButton
             activeTab={activeTab}
             tab="incognito"
             onClick={handleTabChange}
           >
-            Incognito
+            Feed Incognito
           </TabButton>
         </div>
       </div>
