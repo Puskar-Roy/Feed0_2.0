@@ -1,5 +1,6 @@
 import React from "react";
 import { FaPencilAlt } from "react-icons/fa";
+import MessageList from "./MessageUI/MessageList";
 function Message() {
   return (
     <div className="m-10 mt-[8rem] ">
@@ -11,6 +12,10 @@ function Message() {
               <FaPencilAlt />
             </span>
           </h1>
+
+          <div className="overflow-y-auto p-2">
+            <MessageList />
+          </div>
         </div>
         <div className="w-2/3">chat section</div>
       </div>
