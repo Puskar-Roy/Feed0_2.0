@@ -20,14 +20,14 @@ function Message() {
             <MessageList />
           </div>
         </div>
-        <div className="w-2/3 h-screen w-full p-2">
-          <div className="top-0 fixed z-40">
+        <div className="w-2/3 h-screen w-full p-2 ">
+          <div className="top-0 absolute  mt-[8rem]">
             <ChatHeader />
           </div>
           <div>
             <ChatMessage />
           </div>
-          <div className="bottom-0 fixed z-40">
+          <div className="bottom-0 absolute z-40">
             <ChatFooter />
           </div>
         </div>
