@@ -3,7 +3,7 @@ import { FaVideo, FaPhoneAlt, FaInfoCircle } from "react-icons/fa";
 
 function ChatHeader() {
   return (
-    <div className="chat-header px-6 py-4 flex flex-row flex-none justify-between items-center shadow">
+    <div className=" flex justify-between items-center">
       <div className="flex">
         <div className="w-12 h-12 mr-4 relative flex flex-shrink-0">
           <img
