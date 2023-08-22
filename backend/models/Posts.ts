@@ -11,7 +11,7 @@ interface IComment extends Document {
   timestamp: Date;
 }
 
-interface IPost extends Document {
+export interface IPost extends Document {
   userId: string;
   author: string;
   content: string;
@@ -70,7 +70,6 @@ const postSchema: Schema<IPost> = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 
 const Post: Model<IPost> = mongoose.model<IPost>("Post", postSchema);
 

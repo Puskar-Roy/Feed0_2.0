@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
+import Post from "../models/Posts";
+import Group from "../models/Groups";
 import bcryptjs from "bcryptjs";
 import { cloudinary } from "../utils/cloudinary";
-import Post from "../models/Posts";
 import jwt from "jsonwebtoken";
 import { IUserRequest } from "../middleware/middlewares";
 
@@ -27,6 +28,7 @@ const loginController = async (req: Request, res: Response) => {
           expires: expirationDate,
           httpOnly: true,
         };
+
         return res.cookie("access_token", token, options).status(201).json({
           msg: "Log In Done !",
           userName: userExist.name,
@@ -294,7 +296,6 @@ const sendFriendRequestController = async (req: Request, res: Response) => {
   }
 };
 
-
 const respondToFriendRequestController = async (
   req: Request,
   res: Response
@@ -334,7 +335,6 @@ const respondToFriendRequestController = async (
   }
 };
 
-
 const getNewsFeed = async (req: Request, res: Response) => {
   const userId = req.params.userId;
 
@@ -348,11 +348,166 @@ const getNewsFeed = async (req: Request, res: Response) => {
     const newsFeedPosts = await Post.find({ userId: { $in: friendIds } })
       .populate("author", "name imageUrl") // Populate author information
       .sort("-createdAt") // Sort by most recent
-      .limit(10); 
+      .limit(10);
     res.json(newsFeedPosts);
-
   } catch (error) {
     console.error("Error retrieving news feed:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+const allGroups = async (req: Request, res: Response) => {
+  try {
+    const groups = await Group.find().sort("-createdAt").exec();
+    res.json(groups);
+  } catch (error) {
+    res.status(200).json(error);
+  }
+};
+
+const createGroup = async (req: Request, res: Response) => {
+  const { name, description } = req.body;
+  const userId = req.params.userId; // Assuming user ID is in URL parameter
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const newGroup = new Group({
+      name,
+      description,
+      creator: userId,
+      members: [userId], // Add creator as the first member
+      joinRequests: [], // Initialize join requests array
+      posts: [],
+    });
+
+    const savedGroup = await newGroup.save();
+    user.groups.push(savedGroup._id); // Add group to user's groups
+    await user.save();
+
+    res.status(201).json(savedGroup);
+  } catch (error) {
+    console.error("Error creating group:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+const sendJoinRequest = async (req: Request, res: Response) => {
+  const groupId = req.params.groupId;
+  const userId = req.body.userId; // Assuming the user ID is sent in the request body
+
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found." });
+    }
+
+    if (group.members.includes(userId) || group.joinRequests.includes(userId)) {
+      return res
+        .status(400)
+        .json({ message: "User is already a member or has sent a request." });
+    }
+
+    group.joinRequests.push(userId);
+    await group.save();
+
+    res.json({ message: "Join request sent successfully." });
+  } catch (error) {
+    console.error("Error sending join request:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+const respondToJoinRequest = async (req: Request, res: Response) => {
+  const groupId = req.params.groupId;
+  const userId = req.body.userId; // Assuming the user ID is sent in the request body
+  const response = req.body.response; // 'accept' or 'reject'
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found." });
+    }
+
+    if (group.members.includes(userId)) {
+      console.log(group.joinRequests);
+      return res
+        .status(400)
+        .json({ message: "User is already a member of the group." });
+    }
+
+    if (!group.joinRequests.includes(userId)) {
+      return res
+        .status(400)
+        .json({ message: "User has not sent a join request for this group." });
+    }
+
+    group.joinRequests = group.joinRequests.filter((id) => id !== userId);
+
+    if (response === "accept") {
+      group.members.push(userId);
+      group.joinRequests = group.joinRequests.filter((id) => id !== userId);
+    }
+    await group.save();
+    res.json({ message: `Join request ${response}ed.` });
+  } catch (error) {
+    console.error("Error responding to join request:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+const createGroupPost = async (req: IUserRequest, res: Response) => {
+  const groupId = req.params.groupId;
+  const userId = req.userData?._id;
+  console.log(userId);
+  const userName = req.userData?.name;
+  console.log(userName);
+  const postContent = req.body.content;
+  try {
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ message: "Group not found." });
+    }
+    if (!group.members.includes(userId)) {
+      return res
+        .status(403)
+        .json({ message: "You are not a member of this group." });
+    }
+    const newPost = new Post({
+      userId, // Store the user ID who created the post
+      author: userName, // Store the name who created the post
+      content: postContent,
+    });
+
+    await newPost.save();
+    group.posts.push(newPost._id);
+    await group.save();
+
+    res.json({ message: "Post created successfully." });
+  } catch (error) {
+    console.error("Error creating group post:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+const getGroupPosts = async (req: IUserRequest, res: Response) => {
+  const groupId = req.params.groupId;
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found." });
+    }
+    //Prottek phote te group id dia globally post korte pari or only group a post korte pari
+    // Find all posts whose groupId matches the requested groupId
+    // const posts = await Post.find({ groupId });
+    res.json(group.posts);
+  } catch (error) {
+    console.error("Error retrieving group posts:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 };
@@ -373,5 +528,11 @@ export default {
   addComment,
   sendFriendRequestController,
   respondToFriendRequestController,
-  getNewsFeed
+  getNewsFeed,
+  createGroup,
+  respondToJoinRequest,
+  sendJoinRequest,
+  allGroups,
+  createGroupPost,
+  getGroupPosts,
 };

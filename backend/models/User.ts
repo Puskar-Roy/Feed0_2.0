@@ -1,7 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
 
-
 interface ILike extends Document {
   user: string;
   timestamp: Date;
@@ -37,6 +36,7 @@ export interface IUser extends Document {
   posts: string[];
   friends: string[];
   pendingRequests: string[];
+  groups: string[];
 }
 
 const userSchema: Schema<IUser> = new mongoose.Schema({
@@ -79,6 +79,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   pendingRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
 });
 
 userSchema.pre<IUser>("save", async function (next) {
