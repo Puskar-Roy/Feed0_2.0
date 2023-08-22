@@ -1,45 +1,7 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
-import bcryptjs from "bcryptjs";
+const mongoose = require("mongoose");
+const bcryptjs = require("bcryptjs");
 
-interface ILike extends Document {
-  user: string;
-  timestamp: Date;
-}
-
-interface IComment extends Document {
-  user: string;
-  text: string;
-  timestamp: Date;
-}
-
-interface MyPosts extends Document {
-  author: string;
-  content: string;
-  likes: ILike[];
-  comments: IComment[];
-  public_imagePublicId: string;
-  public_imageUrl: string;
-  timestamp: Date;
-}
-
-export interface IUser extends Document {
-  name: string;
-  department: string;
-  batch: string;
-  college: string;
-  email: string;
-  password: string;
-  cpassword: string;
-  phone: number;
-  imagePublicId: String;
-  imageUrl: String;
-  posts: string[];
-  friends: string[];
-  pendingRequests: string[];
-  groups: string[];
-}
-
-const userSchema: Schema<IUser> = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -82,7 +44,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
 });
 
-userSchema.pre<IUser>("save", async function (next) {
+userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcryptjs.hash(this.password, 12);
     this.cpassword = await bcryptjs.hash(this.cpassword, 12);
@@ -90,7 +52,6 @@ userSchema.pre<IUser>("save", async function (next) {
   next();
 });
 
-// Define User model
-const User: Model<IUser> = mongoose.model<IUser>("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
-export default User;
+module.exports = User;
