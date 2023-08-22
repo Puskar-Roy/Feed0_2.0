@@ -34,14 +34,11 @@ function NavBar() {
   return (
     <div className="fixed top-0 w-full z-40">
       <div className="w-full bg-white shadow-xl rounded-b-3xl flex justify-between p-4">
-        <div className="flex items-center space-x-4">
-          <img
-            className="h-10 w-10 rounded-full"
-            src={"/Doraemon.png"}
-            alt="Profile"
-          />
-          <h1 className="font-mono text-lg font-semibold">Feed0</h1>
-        </div>
+        <Link to="/">
+          <div className="flex items-center space-x-4">
+            <h1 className="font-mono text-xl font-semibold">Feed0</h1>
+          </div>
+        </Link>
 
         <div className="flex items-center space-x-6">
           {middleNavLinks.map((link, index) => (
