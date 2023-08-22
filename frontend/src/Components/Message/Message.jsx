@@ -21,9 +21,15 @@ function Message() {
           </div>
         </div>
         <div className="w-2/3 h-screen w-full p-2">
-          <ChatHeader />
-          <ChatMessage />
-          <ChatFooter />
+          <div className="top-0 fixed z-40">
+            <ChatHeader />
+          </div>
+          <div>
+            <ChatMessage />
+          </div>
+          <div className="bottom-0 fixed z-40">
+            <ChatFooter />
+          </div>
         </div>
       </div>
     </div>
