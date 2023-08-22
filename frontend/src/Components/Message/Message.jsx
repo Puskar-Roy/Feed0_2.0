@@ -42,7 +42,6 @@ function Message() {
               <FaPencilAlt />
             </span>
           </h1>
-
           <div className="overflow-y-auto p-2">
             <MessageList/>
           </div>
