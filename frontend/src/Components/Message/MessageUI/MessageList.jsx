@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function Message({ name, message, time, imageUrl }) {
   return (
-    <div className="flex justify-between items-center p-3 hover:bg-gray-800 rounded-lg relative">
+    <div className="flex justify-between items-center p-3 hover:bg-gray-200 rounded-xl relative">
       <div className="w-16 h-16 relative flex flex-shrink-0">
         <img
           className="shadow-md rounded-full w-full h-full object-cover"
@@ -26,13 +26,11 @@ function Message({ name, message, time, imageUrl }) {
     </div>
   );
 }
-// ... (import statements)
 
 function MessageList() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    // Fetch message data from the backend API
     fetchMessageDataFromAPI()
       .then((data) => {
         setMessages(data);
@@ -44,14 +42,13 @@ function MessageList() {
 
   // Mock fetch message data from API
   const fetchMessageDataFromAPI = async () => {
-    // Replace this with actual API call to fetch message data
-    // Example response format: [{ name: "Tony Stark", message: "Hey, Are you there?", time: "10min", imageUrl: "image_url_from_db" }, ...]
-    const response = await fetch("your-backend-api-endpoint");
+    // Replace this with  API call
+    const response = await fetch("backend-api");
     const data = await response.json();
     return data;
   };
 
-  // Dummy data for testing (remove this when integrating with the backend)
+  // Dummy data for testing
   const dummyMessages = [
     {
       name: "Tony Stark",
@@ -65,7 +62,7 @@ function MessageList() {
       time: "15min",
       imageUrl: "https://randomuser.me/api/portraits/men/15.jpg",
     },
-    // Add more dummy messages here
+    //dummy test
   ];
 
   return (
