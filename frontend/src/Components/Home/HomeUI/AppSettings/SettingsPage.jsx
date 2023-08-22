@@ -15,7 +15,7 @@ function SettingsPage() {
         <div className="mx-auto max-w-md bg-white rounded-lg shadow-xl p-6">
           {/* Account Settings */}
           <div className="mb-6">
-            <h2 className="flex items-center text-lg font-semibold mb-4">
+            <h2 className="flex items-center text-xl font-semibold mb-4">
               <FaUser className="mr-2" />
               Account
             </h2>
@@ -43,7 +43,7 @@ function SettingsPage() {
 
           {/* General Settings */}
           <div className="mb-6">
-            <h2 className="flex items-center text-lg font-semibold mb-4">
+            <h2 className="flex items-center text-xl font-semibold mb-4">
               <FaCog className="mr-2" />
               General
             </h2>
@@ -68,7 +68,7 @@ function SettingsPage() {
 
           {/* More Options */}
           <div>
-            <h2 className="flex items-center text-lg font-semibold mb-4">
+            <h2 className="flex items-center text-xl font-semibold mb-4">
               <FaCog className="mr-2" />
               More Options
             </h2>
