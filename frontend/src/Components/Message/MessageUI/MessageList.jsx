@@ -40,7 +40,6 @@ function MessageList() {
       });
   }, []);
 
-  // Mock fetch message data from API
   const fetchMessageDataFromAPI = async () => {
     // Replace this with  API call
     const response = await fetch("backend-api");
