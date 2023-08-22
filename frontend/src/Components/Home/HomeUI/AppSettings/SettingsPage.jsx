@@ -10,9 +10,9 @@ import {
 
 function SettingsPage() {
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="">
       <div className="py-16">
-        <div className="mx-auto max-w-md bg-white rounded-lg shadow-lg p-6">
+        <div className="mx-auto max-w-md bg-white rounded-lg shadow-xl p-6">
           {/* Account Settings */}
           <div className="mb-6">
             <h2 className="flex items-center text-lg font-semibold mb-4">
