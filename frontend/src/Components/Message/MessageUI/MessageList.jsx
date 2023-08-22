@@ -48,7 +48,6 @@ function MessageList() {
     return data;
   };
 
-  // Dummy data for testing
   const dummyMessages = [
     {
       name: "Tony Stark",
