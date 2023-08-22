@@ -1,10 +1,20 @@
-import React from "react";
+import {useState , useEffect} from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import MessageList from "./MessageUI/MessageList";
 import ChatFooter from "./MessageUI/ChatFooter";
 import ChatHeader from "./MessageUI/ChatHeader";
 import ChatMessage from "./MessageUI/ChatMessage";
 function Message() {
+    const [ws, setWs] = useState(null);
+    const handelMessage = (e) => {
+      console.log("New Message - " + e.data);
+    };
+      useEffect(() => {
+        const ws = new WebSocket("ws://localhost:8000/api");
+        setWs(ws);
+        ws.addEventListener("message", handelMessage);
+      }, []);
+      console.log(ws);
   return (
     <div className=" mt-[6rem] ">
       <div className="grid grid-cols-2 mx-auto shadow-xl mx-auto rounded-lg ">
