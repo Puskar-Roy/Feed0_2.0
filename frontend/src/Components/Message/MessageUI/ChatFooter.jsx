@@ -22,35 +22,21 @@ function ChatFooter() {
         type="button"
         className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
       >
-        <FaImage />
+        <FaImage className="w-6 h-6" />
       </button>
       <button
         type="button"
         className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
       >
-        <FaMicrophone />
+        <FaMicrophone className="w-6 h-6" />
       </button>
       <button
         type="button"
         className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
       >
-        <FaSmile />
+        <FaSmile className="w-6 h-6" />
       </button>
-      {isTyping ? (
-        <button
-          type="button"
-          className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
-        >
-          <FaPaperPlane />
-        </button>
-      ) : (
-        <button
-          type="button"
-          className="flex flex-shrink-0 focus:outline-none mx-2 block text-red-600 hover:text-red-700 w-6 h-6"
-        >
-          <FaHeart />
-        </button>
-      )}
+
       <div className="relative flex-grow">
         <label>
           <input
@@ -64,7 +50,11 @@ function ChatFooter() {
             type="button"
             className="absolute top-0 right-0 mt-2 mr-3 flex flex-shrink-0 focus:outline-none block text-blue-600 hover:text-blue-700 w-6 h-6"
           >
-            {isTyping ? <FaPaperPlane /> : <FaHeart />}
+            {isTyping ? (
+              <FaPaperPlane className="w-6 h-6" />
+            ) : (
+              <FaHeart className="w-6 h-6" />
+            )}
           </button>
         </label>
       </div>
