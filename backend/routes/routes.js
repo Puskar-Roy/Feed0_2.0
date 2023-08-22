@@ -1,7 +1,4 @@
-import express from "express";
-import controllers from "../controller/appController";
-import { multerConfig } from "../utils/multer";
-import verifyToken from "../middleware/middlewares";
+const express = require("express");
 const {
   loginController,
   registerController,
@@ -20,12 +17,14 @@ const {
   respondToFriendRequestController,
   getNewsFeed,
   createGroup,
-  sendJoinRequest,
   respondToJoinRequest,
+  sendJoinRequest,
   allGroups,
   createGroupPost,
   getGroupPosts,
-} = controllers;
+} = require("../controller/appController.js");
+const multerConfig = require("../utils/multer");
+const verifyToken = require("../middleware/middlewares");
 
 // Set Up Router
 const router = express.Router();
@@ -68,4 +67,4 @@ router.get("/allgroups", allGroups);
 router.post("/:groupId/Posts", verifyToken, createGroupPost);
 router.get("/groups/:groupId/posts", getGroupPosts);
 
-export default router;
+module.exports = router;

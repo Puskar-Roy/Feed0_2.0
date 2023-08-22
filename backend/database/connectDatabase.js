@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const mongoURI = process.env.MONGO_URI as string;
+const mongoURI = process.env.MONGO_URI;
 
 mongoose
   .connect(mongoURI)
@@ -11,4 +11,4 @@ mongoose
     console.log(err);
   });
 
-declare module "./connectDatabase" {}
+

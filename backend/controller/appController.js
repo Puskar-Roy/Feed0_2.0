@@ -1,13 +1,11 @@
-import { Request, Response } from "express";
-import User, { IUser } from "../models/User";
-import Post from "../models/Posts";
-import Group from "../models/Groups";
-import bcryptjs from "bcryptjs";
-import { cloudinary } from "../utils/cloudinary";
-import jwt from "jsonwebtoken";
-import { IUserRequest } from "../middleware/middlewares";
+const User = require("../models/User");
+const Post = require("../models/Posts");
+const Group = require("../models/Groups");
+const bcryptjs = require("bcryptjs");
+const cloudinary = require("../utils/cloudinary");
+const jwt = require("jsonwebtoken");
 
-const loginController = async (req: Request, res: Response) => {
+const loginController = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(404).json({ error: "Fill All Details", success: false });
@@ -21,7 +19,7 @@ const loginController = async (req: Request, res: Response) => {
       if (verifyPass) {
         const token = jwt.sign(
           { id: userExist._id, phone: userExist.phone },
-          process.env.JWT as string
+          process.env.JWT
         );
         const expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
         const options = {
@@ -29,7 +27,7 @@ const loginController = async (req: Request, res: Response) => {
           httpOnly: true,
         };
 
-        return res.cookie("access_token", token, options).status(201).json({
+        res.cookie("access_token", token, options).status(201).json({
           msg: "Log In Done !",
           userName: userExist.name,
           token: token,
@@ -46,8 +44,7 @@ const loginController = async (req: Request, res: Response) => {
     res.status(500).json({ error: error, success: false });
   }
 };
-
-const registerController = async (req: Request, res: Response) => {
+const registerController = async (req, res) => {
   try {
     const {
       password,
@@ -63,7 +60,6 @@ const registerController = async (req: Request, res: Response) => {
     let imageUrl = "";
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path);
-      console.log(result.secure_url);
       imagePublicId = result.public_id;
       imageUrl = result.secure_url;
     }
@@ -115,7 +111,7 @@ const registerController = async (req: Request, res: Response) => {
   }
 };
 
-const getAllUser = async (req: Request, res: Response) => {
+const getAllUser = async (req, res) => {
   try {
     const users = await User.find().exec();
     res.json(users);
@@ -124,7 +120,7 @@ const getAllUser = async (req: Request, res: Response) => {
   }
 };
 
-const getUser = async (req: Request, res: Response) => {
+const getUser = async (req, res) => {
   const id = req.params.id;
   try {
     const user = await User.findById({ _id: id });
@@ -134,7 +130,7 @@ const getUser = async (req: Request, res: Response) => {
   }
 };
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req, res) => {
   const id = req.params.id;
   try {
     const update = await User.findByIdAndUpdate({ _id: id }, req.body);
@@ -144,7 +140,7 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req, res) => {
   const id = req.params.id;
   try {
     await User.findOneAndDelete({ _id: id });
@@ -154,7 +150,7 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-const createPost = async (req: Request, res: Response) => {
+const createPost = async (req, res) => {
   const userId = req.params.userId;
   const user = await User.findById(userId);
   if (!user) {
@@ -188,7 +184,7 @@ const createPost = async (req: Request, res: Response) => {
   }
 };
 
-const getAllPost = async (req: IUserRequest, res: Response) => {
+const getAllPost = async (req, res) => {
   try {
     const posts = await Post.find().sort("-createdAt").exec();
     res.json(posts);
@@ -197,7 +193,7 @@ const getAllPost = async (req: IUserRequest, res: Response) => {
   }
 };
 
-const getPost = async (req: Request, res: Response) => {
+const getPost = async (req, res) => {
   const id = req.params.id;
   try {
     const user = await Post.findById({ _id: id });
@@ -207,7 +203,7 @@ const getPost = async (req: Request, res: Response) => {
   }
 };
 
-const updatePost = async (req: Request, res: Response) => {
+const updatePost = async (req, res) => {
   const id = req.params.id;
   try {
     const update = await Post.findByIdAndUpdate({ _id: id }, req.body);
@@ -217,7 +213,7 @@ const updatePost = async (req: Request, res: Response) => {
   }
 };
 
-const deletePost = async (req: Request, res: Response) => {
+const deletePost = async (req, res) => {
   const id = req.params.id;
   try {
     await Post.findOneAndDelete({ _id: id });
@@ -227,10 +223,10 @@ const deletePost = async (req: Request, res: Response) => {
   }
 };
 
-const likePost = async (req: Request, res: Response) => {
+const likePost = async (req, res) => {
   try {
-    const postId = req.params.postId; // Assuming the post ID is in the URL parameter
-    const userId = req.body.userId; // Assuming the user ID is in the request body
+    const postId = req.params.postId;
+    const userId = req.body.userId;
 
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
@@ -249,10 +245,10 @@ const likePost = async (req: Request, res: Response) => {
   }
 };
 
-const addComment = async (req: Request, res: Response) => {
+const addComment = async (req, res) => {
   try {
-    const postId = req.params.postId; // Assuming the post ID is in the URL parameter
-    const { user, text } = req.body; // Assuming the user and text are in the request body
+    const postId = req.params.postId;
+    const { user, text } = req.body;
 
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
@@ -270,8 +266,7 @@ const addComment = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Could not add comment" });
   }
 };
-
-const sendFriendRequestController = async (req: Request, res: Response) => {
+const sendFriendRequestController = async (req, res) => {
   const senderId = req.params.senderId;
   const receiverId = req.params.receiverId;
 
@@ -296,10 +291,7 @@ const sendFriendRequestController = async (req: Request, res: Response) => {
   }
 };
 
-const respondToFriendRequestController = async (
-  req: Request,
-  res: Response
-) => {
+const respondToFriendRequestController = async (req, res) => {
   const userId = req.params.userId;
   const requesterId = req.params.requesterId;
   const response = req.body.response; // 'accept' or 'reject'
@@ -335,7 +327,7 @@ const respondToFriendRequestController = async (
   }
 };
 
-const getNewsFeed = async (req: Request, res: Response) => {
+const getNewsFeed = async (req, res) => {
   const userId = req.params.userId;
 
   try {
@@ -356,7 +348,7 @@ const getNewsFeed = async (req: Request, res: Response) => {
   }
 };
 
-const allGroups = async (req: Request, res: Response) => {
+const allGroups = async (req, res) => {
   try {
     const groups = await Group.find().sort("-createdAt").exec();
     res.json(groups);
@@ -365,7 +357,7 @@ const allGroups = async (req: Request, res: Response) => {
   }
 };
 
-const createGroup = async (req: Request, res: Response) => {
+const createGroup = async (req, res) => {
   const { name, description } = req.body;
   const userId = req.params.userId; // Assuming user ID is in URL parameter
 
@@ -395,7 +387,7 @@ const createGroup = async (req: Request, res: Response) => {
   }
 };
 
-const sendJoinRequest = async (req: Request, res: Response) => {
+const sendJoinRequest = async (req, res) => {
   const groupId = req.params.groupId;
   const userId = req.body.userId; // Assuming the user ID is sent in the request body
 
@@ -422,7 +414,7 @@ const sendJoinRequest = async (req: Request, res: Response) => {
   }
 };
 
-const respondToJoinRequest = async (req: Request, res: Response) => {
+const respondToJoinRequest = async (req, res) => {
   const groupId = req.params.groupId;
   const userId = req.body.userId; // Assuming the user ID is sent in the request body
   const response = req.body.response; // 'accept' or 'reject'
@@ -460,7 +452,7 @@ const respondToJoinRequest = async (req: Request, res: Response) => {
   }
 };
 
-const createGroupPost = async (req: IUserRequest, res: Response) => {
+const createGroupPost = async (req, res) => {
   const groupId = req.params.groupId;
   const userId = req.userData?._id;
   console.log(userId);
@@ -494,7 +486,7 @@ const createGroupPost = async (req: IUserRequest, res: Response) => {
   }
 };
 
-const getGroupPosts = async (req: IUserRequest, res: Response) => {
+const getGroupPosts = async (req, res) => {
   const groupId = req.params.groupId;
   try {
     const group = await Group.findById(groupId);
@@ -502,9 +494,6 @@ const getGroupPosts = async (req: IUserRequest, res: Response) => {
     if (!group) {
       return res.status(404).json({ message: "Group not found." });
     }
-    //Prottek phote te group id dia globally post korte pari or only group a post korte pari
-    // Find all posts whose groupId matches the requested groupId
-    // const posts = await Post.find({ groupId });
     res.json(group.posts);
   } catch (error) {
     console.error("Error retrieving group posts:", error);
@@ -512,7 +501,7 @@ const getGroupPosts = async (req: IUserRequest, res: Response) => {
   }
 };
 
-export default {
+module.exports = {
   loginController,
   registerController,
   getAllPost,
