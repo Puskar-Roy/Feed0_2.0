@@ -6,11 +6,11 @@ import ChatHeader from "./MessageUI/ChatHeader";
 import ChatMessage from "./MessageUI/ChatMessage";
 function Message() {
   return (
-    <div className="m-10 mt-[8rem] ">
+    <div className=" mt-[6rem] ">
       <div className="grid grid-cols-2 mx-auto shadow-xl mx-auto rounded-lg ">
         <div className="w-1/3 flex flex-col space-y-4 w-full">
-          <h1 className="flex justify-between">
-            <span>Feed0 Messages</span>
+          <h1 className="flex justify-between px-6 text-xl">
+            <span>Messages</span>
             <span>
               <FaPencilAlt />
             </span>
@@ -20,7 +20,7 @@ function Message() {
             <MessageList />
           </div>
         </div>
-        <div className="w-2/3 h-screen w-full p-2 bg-gray-300">
+        <div className="w-2/3 h-screen w-full p-2 bg-gray-100 rounded-r-lg ">
           <div>
             <ChatHeader />
           </div>
