@@ -1,6 +1,9 @@
 import React from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import MessageList from "./MessageUI/MessageList";
+import ChatFooter from "./MessageUI/ChatFooter";
+import ChatHeader from "./MessageUI/ChatHeader";
+import ChatMessage from "./MessageUI/ChatMessage";
 function Message() {
   return (
     <div className="m-10 mt-[8rem] ">
@@ -17,7 +20,11 @@ function Message() {
             <MessageList />
           </div>
         </div>
-        <div className="w-2/3"></div>
+        <div className="w-2/3 h-screen w-full p-2">
+          <ChatHeader />
+          <ChatMessage />
+          <ChatFooter />
+        </div>
       </div>
     </div>
   );
