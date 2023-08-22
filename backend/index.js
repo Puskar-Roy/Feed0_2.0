@@ -3,13 +3,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const router = require("./routes/routes.js"); // Make sure the path is correct
+const router = require("./routes/routes.js");
 const cookieParser = require("cookie-parser");
-require("./database/connectDatabase.js"); // Make sure the path is correct
-const http = require("http"); // Import http module for type definitions
+require("./database/connectDatabase.js"); 
 const ws = require("ws");
 const jwt = require("jsonwebtoken");
-
+const User = require('./models/User.js')
 const app = express();
 
 // Middleware Set Up
@@ -55,22 +54,21 @@ wss.on("connection", (connection, request) => {
 
   if (cookieValues.length > 0) {
     const token = cookieValues[0];
-    console.log(token);
-    // jwt.verify(token, jwtt, (err, user) => {
-    //   if (err) {
-    //     throw err;
-    //   } else {
-    //     if (
-    //       user &&
-    //       typeof user === "object" &&
-    //       "id" in user &&
-    //       "phone" in user
-    //     ) {
-    //       const userId = user.id;
-    //       const phone = user.phone;
-    //       console.log("Id - " + userId + " Phone - " + phone);
-    //     }
-    //   }
-    // });
+    if(token){
+      jwt.verify(token,process.env.JWT,{},(err,user)=>{
+        if(err) throw err;
+        const {id,phone} = user;
+        connection.id = id;
+        connection.phone = phone;
+        
+      })
+    }
   }
+
+
+  [...wss.clients].forEach(client =>{
+    client.send(JSON.stringify(
+     {online:[...wss.clients].map(c=>({userId:c.id,userPhone:c.phone}))}
+      ))
+  } );
 });
