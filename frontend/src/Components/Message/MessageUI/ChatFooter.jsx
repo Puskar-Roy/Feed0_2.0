@@ -36,7 +36,21 @@ function ChatFooter() {
       >
         <FaSmile />
       </button>
-
+      {isTyping ? (
+        <button
+          type="button"
+          className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
+        >
+          <FaPaperPlane />
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="flex flex-shrink-0 focus:outline-none mx-2 block text-red-600 hover:text-red-700 w-6 h-6"
+        >
+          <FaHeart />
+        </button>
+      )}
       <div className="relative flex-grow">
         <label>
           <input
@@ -46,21 +60,12 @@ function ChatFooter() {
             onChange={handleInputChange}
             placeholder="Aa"
           />
-          {isTyping ? (
-            <button
-              type="button"
-              className=" flex items-center  focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
-            >
-              <FaPaperPlane />
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="flex items-center focus:outline-none mx-2 block text-red-600 hover:text-red-700 w-6 h-6"
-            >
-              <FaHeart />
-            </button>
-          )}
+          <button
+            type="button"
+            className="absolute top-0 right-0 mt-2 mr-3 flex flex-shrink-0 focus:outline-none block text-blue-600 hover:text-blue-700 w-6 h-6"
+          >
+            {isTyping ? <FaPaperPlane /> : <FaHeart />}
+          </button>
         </label>
       </div>
     </div>
