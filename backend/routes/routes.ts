@@ -18,7 +18,13 @@ const {
   addComment,
   sendFriendRequestController,
   respondToFriendRequestController,
-  getNewsFeed
+  getNewsFeed,
+  createGroup,
+  sendJoinRequest,
+  respondToJoinRequest,
+  allGroups,
+  createGroupPost,
+  getGroupPosts,
 } = controllers;
 
 // Set Up Router
@@ -45,14 +51,21 @@ router.patch("/posts/:id", updatePost);
 router.delete("/posts/:id", deletePost);
 
 //      4.Friends End Point
-router.post("/addFriend/:senderId/:receiverId",sendFriendRequestController);
+router.post("/addFriend/:senderId/:receiverId", sendFriendRequestController);
 router.post(
   "/respondFriend/:userId/:requesterId",
   respondToFriendRequestController
 );
 
+//      5.Feeds End Point
+router.get("/feed/:userId", getNewsFeed);
 
-router.get("/feed/:userId",getNewsFeed);
-
+//      6.Feeds End Point
+router.post("/createGroup/:userId", createGroup);
+router.post("/joinGroup/:groupId", sendJoinRequest);
+router.post("/respondJoinGroup/:groupId", respondToJoinRequest);
+router.get("/allgroups", allGroups);
+router.post("/:groupId/Posts", verifyToken, createGroupPost);
+router.get("/groups/:groupId/posts", getGroupPosts);
 
 export default router;
