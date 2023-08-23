@@ -56,6 +56,7 @@ const registerController = async (req, res) => {
       phone,
       college,
     } = req.body;
+    console.log(req.body);
     let imagePublicId = "";
     let imageUrl = "";
     if (req.file) {
@@ -63,6 +64,7 @@ const registerController = async (req, res) => {
       imagePublicId = result.public_id;
       imageUrl = result.secure_url;
     }
+    console.log(imageUrl);
 
     if (
       !name ||
