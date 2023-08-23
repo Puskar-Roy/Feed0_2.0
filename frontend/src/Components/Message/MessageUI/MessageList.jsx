@@ -29,30 +29,29 @@ function Message({ name, message, time, imageUrl }) {
 
 function MessageList() {
   const [messages, setMessages] = useState([]);
-      const [ws, setWs] = useState(null);
-      const [online, setOnline] = useState({});
+  const [ws, setWs] = useState(null);
+  const [online, setOnline] = useState({});
 
-      const showOnlinePeople = (peopleArray) => {
-        const people = {};
-        peopleArray.forEach(({ userId, userPhone }) => {
-          people[userId] = userPhone;
-        });
-        console.log(people);
-        setOnline(people);
-      };
+  const showOnlinePeople = (peopleArray) => {
+    const people = {};
+    peopleArray.forEach(({ userId, userPhone }) => {
+      people[userId] = userPhone;
+    });
+    console.log(people);
+    setOnline(people);
+  };
 
-      const handelMessage = (e) => {
-        const messageData = JSON.parse(e.data);
-        if ("online" in messageData) {
-          showOnlinePeople(messageData.online);
-        }
-      };
-      useEffect(() => {
-        const ws = new WebSocket("ws://localhost:8000/api");
-        setWs(ws);
-        ws.addEventListener("message", handelMessage);
-      }, []);
-
+  const handelMessage = (e) => {
+    const messageData = JSON.parse(e.data);
+    if ("online" in messageData) {
+      showOnlinePeople(messageData.online);
+    }
+  };
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8000/api");
+    setWs(ws);
+    ws.addEventListener("message", handelMessage);
+  }, []);
 
   useEffect(() => {
     fetchMessageDataFromAPI()
@@ -94,18 +93,18 @@ function MessageList() {
             <Message
               key={index}
               name={online[message]}
-              // message={message.message}
-              // time={message.time}
-              // imageUrl={message.imageUrl}
+              message={message.message}
+              time={message.time}
+              imageUrl={message.imageUrl}
             />
           ))
         : messages.map((message, index) => (
             <Message
               key={index}
               name={online[message]}
-              // message={message.message}
-              // time={message.time}
-              // imageUrl={message.imageUrl}
+              message={message.message}
+              time={message.time}
+              imageUrl={message.imageUrl}
             />
           ))}
     </div>

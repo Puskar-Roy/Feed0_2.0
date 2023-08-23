@@ -3,14 +3,14 @@ import { FaEdit, FaUserPlus, FaEnvelope } from "react-icons/fa";
 
 function UserProfile() {
   const [userData, setUserData] = useState({
-    name: "Jessica Jones",
-    location: "Bucharest, Romania",
-    occupation: "Solution Manager - Creative Tim Officer",
-    education: "University of Computer Science",
-    following: 22,
-    followers: 10,
-    posts: 89,
-    about: "An artist of considerable range, Ryan — the name taken by...",
+    name: "Puskar Roy",
+    location: "Kolkata, India",
+    occupation: "Student, Developer",
+    education: "University of Technology, Computer Science & Engineering",
+    following: 8,
+    followers: 5,
+    posts: 4,
+    about: "Hello, Its Feed0 ",
     // demo
   });
 

@@ -3,8 +3,8 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 const servers = [
   { id: 1, name: "Feed0 Official", members: 123, imageUrl: "/Doraemon.png" },
-  { id: 2, name: "UIT, BU", members: 456, imageUrl: "server2.jpg" },
-  { id: 3, name: "Server 3", members: 789, imageUrl: "server3.jpg" },
+  { id: 2, name: "UIT, BU", members: 456, imageUrl: "" },
+  { id: 3, name: "Feed0 Support", members: 789, imageUrl: "" },
   // ... add more servers
 ];
 
