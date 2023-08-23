@@ -26,10 +26,10 @@ function FeedTag({ index, tag, feeds }) {
 
 function FeedTags() {
   const feedTags = [
-    { name: "ImKKingshuk", category: "Person", feeds: 8465 },
-    { name: "Puskar", category: "Person", feeds: 8463 },
-    { name: "React", category: "TechStack", feeds: 846 },
-    { name: "Vite", category: "TechStack", feeds: 84 },
+    { name: "ImKKingshuk", category: "Person", feeds: 5 },
+    { name: "Puskar", category: "Person", feeds: 5 },
+    { name: "React", category: "TechStack", feeds: 8 },
+    { name: "Vite", category: "TechStack", feeds: 6 },
     // ... Add more feed tags
   ];
 
